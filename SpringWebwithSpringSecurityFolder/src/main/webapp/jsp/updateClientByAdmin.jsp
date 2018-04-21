@@ -19,16 +19,16 @@
                 <p><input type="text" name="id" value="<c:out value="${client.id}"/>" readonly hidden/></p>
 
                 <p><fmt:message key = "FirstName"/></p>
-                <p><input class = "text-form" type="text" name="first_name" value="<c:out value="${client.first_name}"/>"/></p>
+                <p><input class = "text-form" type="text" name="first_name" value="<c:out value="${client.firstName}"/>"/></p>
 
                 <p><fmt:message key = "LastName"/></p>
-                <p><input class = "text-form" type="text" name="last_name" value="<c:out value="${client.last_name}"/>"/></p>
+                <p><input class = "text-form" type="text" name="last_name" value="<c:out value="${client.lastName}"/>"/></p>
 
                 <p><fmt:message key = "Surname"/></p>
                 <p><input class = "text-form" type="text" name="surname" value="<c:out value="${client.surname}"/>"/></p>
 
                 <p><fmt:message key = "UserID"/></p>
-                <p><input class = "text-form" type="text" name="user_id" value="<c:out value="${client.user_id}"/>"/></p>
+                <p><input class = "text-form" type="text" name="user_id" value="<c:out value="${client.userId}"/>"/></p>
 
                 <br><input class ="submit-form" type="submit" value=<fmt:message key = "Submit"/> />
         </div>

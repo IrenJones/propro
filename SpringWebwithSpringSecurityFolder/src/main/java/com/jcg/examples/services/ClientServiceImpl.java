@@ -8,10 +8,12 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
 
+@Service
 public class ClientServiceImpl implements ClientService{
 
     private static final Logger logger = Logger.getLogger(ClientServiceImpl.class);
@@ -33,7 +35,7 @@ public class ClientServiceImpl implements ClientService{
                 //FIXME
                 List<Client> allclient = sess.createQuery("from Client").list();
                 for (Client c: allclient) {
-                    if (c.getUser_id() == id){
+                    if (c.getUserId() == id){
                         client = c;
                     }
                 }
@@ -140,10 +142,10 @@ public class ClientServiceImpl implements ClientService{
                 String hql = "update Client set first_name =:first_name, last_name=:last_name, " +
                         "surname=:surname,user_id=:user_id where id=:id";
                 sess.createQuery(hql)
-                        .setParameter("id", client.getId()).setParameter("first_name", client.getFirst_name())
-                        .setParameter("last_name", client.getLast_name())
+                        .setParameter("id", client.getId()).setParameter("first_name", client.getFirstName())
+                        .setParameter("last_name", client.getLastName())
                         .setParameter("surname", client.getSurname())
-                        .setParameter("user_id", client.getUser_id())
+                        .setParameter("user_id", client.getUserId())
                         .executeUpdate();
                 tx.commit();
             } catch(RuntimeException e2) {

@@ -17,7 +17,6 @@
 <thead>
   <tr>
         <td><fmt:message key = "Index" /></td>
-        <td><fmt:message key = "ID" /></td>
         <td><fmt:message key = "Number" /></td>
         <td><fmt:message key = "AccountID" /></td>
         <td><fmt:message key = "ClientID" /></td>
@@ -29,7 +28,6 @@
   <c:forEach var="card" items="${cards}" varStatus="status">
     <tr>
       <td><c:out value="${status.index + 1}"/></td>
-      <td><c:out value="${card.id}"/></td>
       <td><c:out value="${card.card_number}"/></td>
       <td><c:out value="${card.account_id}"/></td>
       <td><c:out value="${card.client_id}"/></td>

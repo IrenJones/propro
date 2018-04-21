@@ -7,10 +7,12 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
 
+@Service
 public class CardServiceImpl implements CardService{
 
     private static final Logger logger = Logger.getLogger(CardServiceImpl.class);
@@ -32,7 +34,7 @@ public class CardServiceImpl implements CardService{
                 //FIXME
                 List<Card> allcards = sess.createQuery("from Card").list();
                 for (Card c: allcards) {
-                    if (c.getClient_id() == id){
+                    if (c.getClientId() == id){
                         cards.add(c);
                     }
                 }
@@ -133,9 +135,9 @@ public class CardServiceImpl implements CardService{
                         "account_id=:account_id, client_id=:client_id where id=:id";
                 sess.createQuery(hql)
                         .setParameter("id", card.getId())
-                        .setParameter("card_number", card.getCard_number())
-                        .setParameter("account_id", card.getAccount_id())
-                        .setParameter("client_id", card.getClient_id())
+                        .setParameter("card_number", card.getCardNumber())
+                        .setParameter("account_id", card.getAccountId())
+                        .setParameter("client_id", card.getClientId())
                         .executeUpdate();
                 tx.commit();
             } catch(RuntimeException e2) {

@@ -7,10 +7,13 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+@Service
 public class BankAccountServiceImpl implements BankAccountService {
 
     private static final Logger logger = Logger.getLogger(BankAccountServiceImpl.class);
@@ -19,7 +22,7 @@ public class BankAccountServiceImpl implements BankAccountService {
     public List<BankAccount> selectAll() {
         SessionFactory sf = new Configuration().configure().buildSessionFactory();
         Session session = null;
-        List<BankAccount> tr_list = new LinkedList<BankAccount>();
+        List<BankAccount> tr_list= Collections.emptyList();
         try {
             session = sf.openSession();
             Query q = session.createQuery("from BankAccount");
@@ -36,6 +39,13 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
+    public List<BankAccount> selectAllByClientId() {
+
+        return null;
+    }
+
+
+    @Override
     public void changeStatusById(long id) {
         SessionFactory sf = new Configuration().configure().buildSessionFactory();
 
@@ -46,11 +56,11 @@ public class BankAccountServiceImpl implements BankAccountService {
             try {
                 tx = sess.beginTransaction();
                 BankAccount acc = (BankAccount) sess.get(BankAccount.class, id);
-                if (acc.getIs_blocked() == true) {
-                    acc.setIs_blocked(false);
+                if (acc.isBlocked()) {
+                    acc.setBlocked(false);
                 }
                 else{
-                    acc.setIs_blocked(true);
+                    acc.setBlocked(true);
                 }
                 sess.save(acc);
                 tx.commit();
@@ -166,7 +176,7 @@ public class BankAccountServiceImpl implements BankAccountService {
                 sess.createQuery(hql)
                         .setParameter("id", account.getId())
                         .setParameter("balance", account.getBalance())
-                        .setParameter("is_blocked", account.getIs_blocked())
+                        .setParameter("is_blocked", account.isBlocked())
                         .executeUpdate();
                 tx.commit();
             } catch(RuntimeException e2) {

@@ -18,6 +18,12 @@ public interface BankAccountService {
     List<BankAccount> selectAll();
 
     /**
+     * This method selects all bank accounts from database
+     * @return list of bank accounts
+     */
+    List<BankAccount> selectAllByClientId();
+
+    /**
      * This method changes status of bank account by id in database
      * @param id bank account's id
      */

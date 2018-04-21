@@ -17,7 +17,7 @@
             root
         </property>
         <property name="hibernate.connection.password">
-             sqlsqlsql12345
+            1Irka2345
         </property>
 
         <mapping class="com.jcg.examples.models.User" />

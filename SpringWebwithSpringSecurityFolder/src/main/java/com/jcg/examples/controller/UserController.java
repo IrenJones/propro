@@ -59,12 +59,14 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/user/show_transactions", method = RequestMethod.GET)
-    public ModelAndView showTransactions() {
+    public ModelAndView showTransactions(HttpServletRequest request) {
         ModelAndView m = new ModelAndView("showTransactionsForUser");
         List<Transfer> tr;
-        int id = 3;
+        String login = request.getUserPrincipal().getName();
+        User user = userService.findByLog(login);
+        Client c = clientService.findByUserId(user.getId());
         try {
-            tr = transactionService.selectAll(id);
+            tr = transactionService.selectAll(c.getUserId());
         } catch (RuntimeException e) {
             logger.error(e.getMessage());
             m.addObject("error", e.getMessage());
@@ -100,17 +102,17 @@ public class UserController {
             String login = request.getUserPrincipal().getName();
             User user = userService.findByLog(login);
             Client c = clientService.findByUserId(user.getId());
-            Card cc = cardService.findByNumber(card.getCard_number());
-            BankAccount bankAcc = bankAccountService.getById(cc.getAccount_id());
+            Card cc = cardService.findByNumber(card.getCardNumber());
+            BankAccount bankAcc = bankAccountService.getById(cc.getAccountId());
 
-            if (bankAcc.getIs_blocked()==false) {
-                bankAcc.setBalance(bankAcc.getBalance() - tr.getTr_sum());
+            if (!bankAcc.isBlocked()) {
+                bankAcc.setBalance(bankAcc.getBalance() - tr.getTrSum());
                 bankAccountService.update(bankAcc);
 
-                tr.setCard_id((int) (long) cc.getId());
-                tr.setTr_type(0);
-                tr.setTr_date(java.sql.Date.valueOf(LocalDate.now()));
-                tr.setClient_id((int) (long) c.getId());
+                tr.setCardId((int) (long) cc.getId());
+                tr.setTrType(0);
+                tr.setTrDate(java.sql.Date.valueOf(LocalDate.now()));
+                tr.setClientId((int) (long) c.getId());
                 transactionService.save(tr);
             }
 
@@ -148,17 +150,17 @@ public class UserController {
             String login = request.getUserPrincipal().getName();
             User user = userService.findByLog(login);
             Client c = clientService.findByUserId(user.getId());
-            Card cc = cardService.findByNumber(card.getCard_number());
-            BankAccount bankAcc = bankAccountService.getById(cc.getAccount_id());
+            Card cc = cardService.findByNumber(card.getCardNumber());
+            BankAccount bankAcc = bankAccountService.getById(cc.getAccountId());
 
-            if (bankAcc.getIs_blocked()==false) {
-                bankAcc.setBalance(bankAcc.getBalance() + tr.getTr_sum());
+            if (!bankAcc.isBlocked()) {
+                bankAcc.setBalance(bankAcc.getBalance() + tr.getTrSum());
                 bankAccountService.update(bankAcc);
 
-                tr.setCard_id((int) (long) cc.getId());
-                tr.setTr_type(1);
-                tr.setTr_date(java.sql.Date.valueOf(LocalDate.now()));
-                tr.setClient_id((int) (long) c.getId());
+                tr.setCardId((int) (long) cc.getId());
+                tr.setTrType(1);
+                tr.setTrDate(java.sql.Date.valueOf(LocalDate.now()));
+                tr.setClientId((int) (long) c.getId());
                 transactionService.save(tr);
             }
 
@@ -213,7 +215,7 @@ public class UserController {
             client = clientService.findByUserId(user.getId());
             cards = cardService.findByClientId(client.getId());
             for (Card c: cards) {
-                bankAccs.add(bankAccountService.getById(c.getAccount_id()));
+                bankAccs.add(bankAccountService.getById(c.getAccountId()));
             }
         } catch (RuntimeException e) {
             logger.error(e.getMessage());
@@ -280,7 +282,7 @@ public class UserController {
         try {
             BankAccount acc = new BankAccount();
             acc.setBalance(0);
-            acc.setIs_blocked(false);
+            acc.setBlocked(false);
             bankAccountService.save(acc);
         } catch (RuntimeException e) {
             logger.error(e.getMessage());
@@ -474,7 +476,7 @@ public class UserController {
      * @param id
      * @return updated page /admin/show_cards withiot deleted card.
      */
-    @RequestMapping(value = "/admin/delete_card/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/delete_card/{id}", method = RequestMethod.DELETE)
     public String deleteCardById(@PathVariable("id") long id ) {
 
         try {
@@ -528,7 +530,7 @@ public class UserController {
      * @param user
      * @return updated admin/show_users page
      */
-    @RequestMapping(value = "/admin/update/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/update/{id}", method = RequestMethod.PUT)
     public String submitUpdateByAdmin(Model m, @ModelAttribute("user") User user) {
         try {
             userService.update(user);
@@ -553,7 +555,7 @@ public class UserController {
     @RequestMapping(value = "/admin/find", method = RequestMethod.POST)
     public ModelAndView findByLog(Model model, HttpServletRequest request) {
         String log = request.getParameter("login");
-        User user = new User();
+        User user;
         ModelAndView m = new ModelAndView("searchResults");
         try {
             user = userService.findByLog(log);
@@ -594,9 +596,9 @@ public class UserController {
     @RequestMapping(value = "/login/registration", method = RequestMethod.POST)
     public String registrationPost(Model m, @ModelAttribute("user") User user, @ModelAttribute("client") Client client) {
         try {
-            user.setIs_admin("user");
+            user.setIsAdmin("user");
             userService.save(user);
-            client.setUser_id((int) (long) user.getId()); // так делать не надо!!!
+            client.setUserId((int) (long) user.getId()); // так делать не надо!!!
             clientService.save(client);
         } catch (RuntimeException e) {
             logger.error(e.getMessage());

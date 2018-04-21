@@ -15,10 +15,10 @@
         <h1><fmt:message key = "AddFunds"/></h1>
         <div type="div-form">
                 <p><fmt:message key = "CardNumber"/></p>
-                <p><input class = "text-form" type="text" name="card_number" /></p>
+                <p><input class = "text-form" type="text" name="cardNumber" /></p>
 
                 <p><fmt:message key = "Sum"/></p>
-                <p><input class = "text-form" type="text" name="tr_sum"/></p>
+                <p><input class = "text-form" type="text" name="trSum"/></p>
 
                 <br><input class ="submit-form" type="submit" value=<fmt:message key = "Submit"/> />
         </div>

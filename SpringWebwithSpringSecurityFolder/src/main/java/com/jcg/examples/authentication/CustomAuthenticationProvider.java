@@ -40,7 +40,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         if ((user = authorizedUser(userName, password)) != null) {
             List<GrantedAuthority> grantedAuths = new ArrayList<>();
             GrantedAuthority grantedAuthority;
-            if (user.getIs_admin().equals("user"))
+            if (user.getIsAdmin().equals("user"))
                 grantedAuthority = new SimpleGrantedAuthority("ROLE_USER");
             else
                 grantedAuthority = new SimpleGrantedAuthority("ROLE_ADMIN");

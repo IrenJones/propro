@@ -15,13 +15,13 @@
         <h1><fmt:message key = "CreateCard"/></h1>
         <div type="div-form">
                 <p><fmt:message key = "Number"/></p>
-                <p><input class = "text-form" type="text" name="card_number" /></p>
+                <p><input class = "text-form" type="text" name="cardNumber" /></p>
 
                 <p><fmt:message key = "AccountID"/></p>
-                <p><input class = "text-form" type="text" name="account_id" /></p>
+                <p><input class = "text-form" type="text" name="accountId" /></p>
 
                 <p><fmt:message key = "ClientID"/></p>
-                <p><input class = "text-form" type="text" name="client_id" /></p>
+                <p><input class = "text-form" type="text" name="clientId" /></p>
 
                 <br><input class ="submit-form" type="submit" value=<fmt:message key = "Submit"/> />
         </div>

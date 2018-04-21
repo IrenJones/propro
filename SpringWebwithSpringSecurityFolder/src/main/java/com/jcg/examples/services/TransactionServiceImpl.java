@@ -7,10 +7,12 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import com.jcg.examples.models.Transfer;
+import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
 
+@Service
 public class TransactionServiceImpl implements TransactionService{
 
 	private static final Logger logger = Logger.getLogger(TransactionServiceImpl.class);

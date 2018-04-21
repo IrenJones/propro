@@ -7,14 +7,15 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import com.jcg.examples.models.User;
+import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
 
+@Service
 public class UserServiceImpl implements UserService{
 
 	private static final Logger logger = Logger.getLogger(UserServiceImpl.class);
-	//private SessionFactory sf;
 	
 	public User findByLog(String log){
 		SessionFactory sf = new Configuration().configure().buildSessionFactory();
@@ -30,6 +31,7 @@ public class UserServiceImpl implements UserService{
 				tx = sess.beginTransaction();
 				Query q = sess.createQuery("from User where login = :log");
 				q.setParameter("log", log);
+
 				user = (User)q.list().get(0);
 				tx.commit();				
 			} catch(RuntimeException e2) {
@@ -149,7 +151,7 @@ public class UserServiceImpl implements UserService{
                 String hql = "update User set login =:login, password=:password, is_admin=:is_admin where id=:id";
                 sess.createQuery(hql)
                         .setParameter("id", user.getId()).setParameter("login", user.getLogin())
-                        .setParameter("password", user.getPassword()).setParameter("is_admin", user.getIs_admin())
+                        .setParameter("password", user.getPassword()).setParameter("is_admin", user.getIsAdmin())
                         .executeUpdate();
                 tx.commit();
             } catch(RuntimeException e2) {

@@ -25,7 +25,7 @@
             </tr>
             <tr>
             <td><fmt:message key = "Role"/></td>
-            <td><c:out value="${user.is_admin}"/></td>
+            <td><c:out value="${user.isAdmin}"/></td>
             </tr>
           </tbody>
         </table>

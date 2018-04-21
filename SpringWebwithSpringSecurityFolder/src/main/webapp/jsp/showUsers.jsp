@@ -37,7 +37,7 @@
       <td><c:out value="${status.index + 1}"/></td>
       <td><c:out value="${user.id}"/></td>
       <td><c:out value="${user.login}"/></td>
-      <td><c:out value="${user.is_admin}"/></td>
+      <td><c:out value="${user.isAdmin}"/></td>
       
       <fmt:bundle basename = "messages">
       <td><a class="btn btn-primary" href="<c:url value="/admin/update/${user.id}"/>" role="button"><fmt:message key = "UpdateBtn" /><br/></a></td>

@@ -20,11 +20,11 @@
 
 
                 <p>First name</p>
-                <p><input class = "text-form" type="text" name="first_name" /></p>
+                <p><input class = "text-form" type="text" name="firstName" /></p>
 
 
                 <p>Last name</p>
-                <p><input class = "text-form" type="text" name="last_name" /></p>
+                <p><input class = "text-form" type="text" name="lastName" /></p>
 
 
                 <p>Surname</p>

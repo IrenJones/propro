@@ -16,7 +16,6 @@
 <thead>
   <tr>
         <td><fmt:message key = "Index" /></td>
-        <td><fmt:message key = "ID" /></td>
         <td><fmt:message key = "Balance" /></td>
         <td><fmt:message key = "Status" /></td>
         <td><fmt:message key = "Action" /></td>
@@ -27,15 +26,14 @@
   <c:forEach var="bankAcc" items="${bankAccs}" varStatus="status">
     <tr>
       <td><c:out value="${status.index + 1}"/></td>
-      <td><c:out value="${bankAcc.id}"/></td>
       <td><c:out value="${bankAcc.balance}"/></td>
-      <c:if test="${bankAcc.is_blocked == true}">
+      <c:if test="${bankAcc.blocked== true}">
           <td>Blocked</td>
           <td><a class="btn btn-primary"
           href="<c:url value="/admin/show_bank-accounts/change_status/${bankAcc.id}"/>"
           role="button"><fmt:message key = "Unblock" /></a></td>
       </c:if>
-      <c:if test="${bankAcc.is_blocked == false}">
+      <c:if test="${bankAcc.blocked == false}">
            <td>Not Blocked</td>
            <td><a class="btn btn-warning"
             href="<c:url value="/admin/show_bank-accounts/change_status/${bankAcc.id}"/>"

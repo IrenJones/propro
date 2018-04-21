@@ -15,7 +15,6 @@
 <thead>
   <tr>
         <td><fmt:message key = "Index" /></td>
-        <td><fmt:message key = "ID" /></td>
         <td><fmt:message key = "Date" /></td>
         <td><fmt:message key = "Sum" /></td>
         <td><fmt:message key = "TypeOfTransaction" /></td>
@@ -27,12 +26,11 @@
   <c:forEach var="tr" items="${transactions}" varStatus="status">
     <tr>
       <td><c:out value="${status.index + 1}"/></td>
-      <td><c:out value="${tr.id}"/></td>
-      <td><c:out value="${tr.tr_date}"/></td>
-      <td><c:out value="${tr.tr_sum}"/></td>
-      <td><c:out value="${tr.tr_type}"/></td>
-      <td><c:out value="${tr.card_id}"/></td>
-      <td><c:out value="${tr.client_id}"/></td>
+      <td><c:out value="${tr.trDate}"/></td>
+      <td><c:out value="${tr.trSum}"/></td>
+      <td><c:out value="${tr.trType}"/></td>
+      <td><c:out value="${tr.cardId}"/></td>
+      <td><c:out value="${tr.clientId}"/></td>
     </tr>
   </c:forEach>
   </tbody>
