@@ -280,4 +280,47 @@ public class CardServiceImpl implements CardService{
         }
         return card;
     }
+
+    @Override
+    public Card findByBA(Long id) {
+        SessionFactory sf = new Configuration().configure().buildSessionFactory();
+
+        Session sess = null;
+        Card card = null;
+
+        try {
+
+            sess = sf.openSession();
+            Transaction tx = null;
+
+            try {
+                tx = sess.beginTransaction();
+                Query q = sess.createQuery("from Card where account_id = :account_id");
+                q.setParameter("account_id", id);
+                card = (Card)q.list().get(0);
+                tx.commit();
+            } catch(RuntimeException e2) {
+                try {
+                    if(tx != null) tx.rollback();
+                } catch (Exception e3) {
+                    logger.error("Exception in rollback", new RuntimeException("Rollback error"));
+                    throw new RuntimeException("Rollback error");
+                }
+                logger.error("Exception in transaction", new RuntimeException("Error while making query"));
+                throw new RuntimeException("Error while making query");
+            }
+
+        } catch (RuntimeException e1) {
+            logger.error("Exception in openSession", new RuntimeException(e1.getMessage()));
+            throw new RuntimeException(e1.getMessage());
+        } finally {
+            if(sess != null) sess.close();
+        }
+
+        if(card == null) {
+            logger.error("Exception in findByBA", new RuntimeException("Card not found"));
+            throw new RuntimeException("Card not found");
+        }
+        return card;
+    }
 }

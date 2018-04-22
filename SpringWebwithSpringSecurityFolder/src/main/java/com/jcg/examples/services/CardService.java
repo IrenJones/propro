@@ -56,4 +56,6 @@ public interface  CardService {
      * @return card
      */
     Card findByNumber(String card_number);
+
+    Card findByBA(Long id);
 }

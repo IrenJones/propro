@@ -16,6 +16,7 @@
 <thead>
   <tr>
         <td><fmt:message key = "Index"/></td>
+        <td><fmt:message key = "CardNumber"/></td>
         <td><fmt:message key = "Balance"/></td>
         <td><fmt:message key = "Status"/></td>
         <td><fmt:message key = "Action"/></td>
@@ -25,7 +26,7 @@
   <c:forEach var="bankAcc" items="${bankAccs}" varStatus="status">
     <tr>
       <td><c:out value="${status.index + 1}"/></td>
-      <td><c:out value="${bankAcc.id}"/></td>
+      <td><c:out value="${cardNumbers[status.index]}"/></td>
       <td><c:out value="${bankAcc.balance}"/></td>
       <c:if test="${bankAcc.blocked == true}">
           <td>Blocked</td>

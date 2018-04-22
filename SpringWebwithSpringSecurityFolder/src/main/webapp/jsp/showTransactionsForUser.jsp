@@ -18,7 +18,7 @@
             <td><fmt:message key = "Date"/></td>
             <td><fmt:message key = "Sum"/></td>
             <td><fmt:message key = "TypeOfTransaction"/></td>
-            <td><fmt:message key = "CardID"/></td>
+            <td><fmt:message key = "CardNumber"/></td>
         </tr>
         </thead>
         <tbody>
@@ -27,8 +27,13 @@
                 <td><c:out value="${status.index + 1}"/></td>
                 <td><c:out value="${tr.trDate}"/></td>
                 <td><c:out value="${tr.trSum}"/></td>
-                <td><c:out value="${tr.trType}"/></td>
-                <td><c:out value="${tr.cardId}"/></td>
+                <c:if test="${tr.trType == 0}">
+                    <td>Payment was made</td>
+                </c:if>
+                <c:if test="${tr.trType == 1}">
+                    <td>Adding funds was made</td>
+                </c:if>
+                <td><c:out value="${cardNumbers[status.index]}"/></td>
             </tr>
         </c:forEach>
         </tbody>

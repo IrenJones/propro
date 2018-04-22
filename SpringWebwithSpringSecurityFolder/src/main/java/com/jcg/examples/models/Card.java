@@ -24,6 +24,8 @@ public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name="card_number")
     private String cardNumber;
 
     @Column(name="account_id")

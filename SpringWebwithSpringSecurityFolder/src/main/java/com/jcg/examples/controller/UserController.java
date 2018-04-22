@@ -16,10 +16,9 @@ import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+
 import org.apache.log4j.Logger;
 
 
@@ -61,18 +60,23 @@ public class UserController {
     @RequestMapping(value = "/user/show_transactions", method = RequestMethod.GET)
     public ModelAndView showTransactions(HttpServletRequest request) {
         ModelAndView m = new ModelAndView("showTransactionsForUser");
-        List<Transfer> tr;
+        List<Transfer> tr = new ArrayList<>();
+        List<String> cardNumberList = new ArrayList<>();
         String login = request.getUserPrincipal().getName();
         User user = userService.findByLog(login);
         Client c = clientService.findByUserId(user.getId());
         try {
             tr = transactionService.selectAll(c.getUserId());
+            cardNumberList = tr.stream()
+                    .map(tra -> cardService.findById(tra.getCardId()).getCardNumber())
+                    .collect(Collectors.toList());
         } catch (RuntimeException e) {
             logger.error(e.getMessage());
             m.addObject("error", e.getMessage());
             return m;
         }
         m.addObject("transactions",tr);
+        m.addObject("cardNumbers",cardNumberList);
         return m;
     }
 
@@ -208,6 +212,7 @@ public class UserController {
         ModelAndView m = new ModelAndView("showUserBankAccounts");
         List<Card> cards = new LinkedList<Card>();
         List<BankAccount> bankAccs = new LinkedList<BankAccount>();
+        List<String> cardNumberList = new ArrayList<>();
         String login = request.getUserPrincipal().getName();
         Client client = null;
         try {
@@ -217,12 +222,16 @@ public class UserController {
             for (Card c: cards) {
                 bankAccs.add(bankAccountService.getById(c.getAccountId()));
             }
+            cardNumberList = bankAccs.stream()
+                    .map(ba -> cardService.findByBA(ba.getId()).getCardNumber())
+                    .collect(Collectors.toList());
         } catch (RuntimeException e) {
             logger.error(e.getMessage());
             m.addObject("error", e.getMessage());
             return m;
         }
         m.addObject("bankAccs",bankAccs);
+        m.addObject("cardNumbers",cardNumberList);
         return m;
     }
 
@@ -406,14 +415,26 @@ public class UserController {
     public ModelAndView showCards(){
         ModelAndView m = new ModelAndView("showCards");
         List<Card> cards = new LinkedList<Card>();
+        List<Integer> balancesList = new ArrayList<>();
+        List<Boolean> statusesList = new ArrayList<>();
         try {
             cards = cardService.selectAll();
+            balancesList = cards.stream().map(card -> bankAccountService
+                    .getById(card.getAccountId())
+                    .getBalance())
+                    .collect(Collectors.toList());
+            statusesList = cards.stream().map(card -> bankAccountService
+                    .getById(card.getAccountId())
+                    .isBlocked())
+                    .collect(Collectors.toList());
         } catch (RuntimeException e) {
             logger.error(e.getMessage());
             m.addObject("error", e.getMessage());
             return m;
         }
         m.addObject("cards",cards);
+        m.addObject("balances",balancesList);
+        m.addObject("statuses",statusesList);
         return m;
     }
 
